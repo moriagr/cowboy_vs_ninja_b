@@ -12,7 +12,7 @@ namespace ariel {
     Ninja::Ninja() : speed(0),
                      Character(0, Point(0, 0), "") {}
 
-    Ninja::~Ninja() {}
+    Ninja::~Ninja() {} //not finished
 
     // Define copy constructor
     Ninja::Ninja(const Ninja &other) :speed(other.getSpeed()),
@@ -42,11 +42,21 @@ namespace ariel {
     }
 
     void Ninja::move(Character *other) {
-
+        this->getLocation().moveTowards(this->getLocation(), other->getLocation(), this->getSpeed());
     }
 
     void Ninja::slash(Character *other) {
+        if( other  == this ){
+            throw std::runtime_error("You can't slash yourself");
+        }
 
+//        if(!other->isAlive() || !this->isAlive()){
+//            throw std::runtime_error("You can't slash yourself")
+//        }
+//
+        if(this->isAlive() && this->distance(other) <= 1){
+            other->hit(40);
+        }
     }
 
     int Ninja::getSpeed() const{

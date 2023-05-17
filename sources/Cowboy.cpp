@@ -51,12 +51,24 @@ namespace ariel {
     Cowboy::~Cowboy(){} //not finished
 
     void Cowboy::shoot(Character *other) {
-        if(other->isAlive()){
-            other->hit(this->numOfBalls);
+        if( other == this ){
+            throw std::runtime_error("You can't shoot yourself");
+        }
+//        if(!(other->isAlive()) || !(this->isAlive())){
+//            throw std::runtime_error("You can't shoot somebody who is already dead");
+//        }
+        if(this->getNumOfBalls()>0) {
+            other->hit(10);
+            this->numOfBalls = this->numOfBalls - 1;
         }
     }
 
     void Cowboy::reload() {
+        if(!(this->isAlive())){
+            throw std::runtime_error("You can't reload when your dead");
+
+        }
+
         this->numOfBalls = 6;
     }
 

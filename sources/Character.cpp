@@ -47,7 +47,10 @@ namespace ariel {
     }
 
     bool Character::isAlive() {
-       return hit_num > 0;
+        if( hit_num > 0 ){
+            return true;
+        }
+       return false;
     }
 
     double Character::distance(Character *other) {
@@ -55,6 +58,9 @@ namespace ariel {
     }
 
     void Character::hit(int num) {
+        if(num < 0){
+            throw std::invalid_argument("Hit number can't be negative");
+        }
 
         if(this->hit_num < num){
             this->hit_num = hit_num - num;

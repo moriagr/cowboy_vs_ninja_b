@@ -247,8 +247,9 @@ TEST_SUITE("Battle related methods") {
         auto cowboy = create_cowboy();
         for (int i = 0; i < 15; i++) {
             cowboy->reload();
-
+            cout<<"i:  "<<i<<endl;
             // After 10 shots, young should die
+            cout << (young->print())<<endl;
             if (i < 10) {
                 CHECK(young->isAlive());
                 cowboy->shoot(young);
