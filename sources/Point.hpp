@@ -10,6 +10,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <cassert>
+#include <cmath>
 
 using namespace std;
 
@@ -17,27 +18,31 @@ namespace ariel {
 
     class Point {
     private:
-        float x;
-        float y;
+        double x;
+        double y;
 
     public:
-        Point(float myX, float myY);
+//        Point(float myX, float myY);
+
+        Point(double myX, double myY);
+
+//        Point(int myX, int myY);
 
         Point();
 
-        float getX() const;
+        double getX() const;
 
-        float getY() const;
+        double getY() const;
 
-        void setX(float myX);
+        void setX(double myX);
 
-        void setY(float myY);
+        void setY(double myY);
 
-        float distance(Point other);
+        double distance(Point other);
 
         void print();
 
-        Point moveTowards(Point origin, Point destination, float distance);
+        static Point moveTowards(Point origin, Point destination, double distance);
     };
 
 }

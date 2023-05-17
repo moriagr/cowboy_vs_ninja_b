@@ -39,6 +39,8 @@ namespace ariel {
         // Define move assignment operator
         Cowboy& operator=(Cowboy&& other) noexcept;
 
+        int getNumOfBalls() const;
+
         void shoot(Character *other);
 
         void reload();

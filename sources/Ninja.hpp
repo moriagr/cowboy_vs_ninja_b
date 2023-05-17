@@ -30,6 +30,8 @@ namespace ariel {
 
         void slash(Character *other);
 
+        int getSpeed() const;
+
         string print() override;
 
         // Define copy constructor

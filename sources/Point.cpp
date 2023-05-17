@@ -5,39 +5,53 @@
 #include "Point.hpp"
 
 namespace ariel {
-    Point::Point(float myX, float myY) {
-        this->x = myX;
-        this->y = myY;
+
+    Point::Point(double myX, double myY) {
+        this->x = (double) myX;
+        this->y = (double) myY;
     }
 
-    Point::Point() {}
+    Point::Point() {
+        this->x = 0;
+        this->y = 0;
+    }
 
-    float Point::getX() const {
+    double Point::getX() const {
         return this->x;
     }
 
-    float Point::getY() const {
+    double Point::getY() const {
         return this->y;
     }
 
-    void Point::setX(float myX) {
+    void Point::setX(double myX) {
         this->x = myX;
     }
 
-    void Point::setY(float myY) {
+    void Point::setY(double myY) {
         this->y = myY;
     }
 
-    float Point::distance(Point other) {
-        return 0.0;
+    double Point::distance(Point other) {
+        return sqrt(pow(this->x - other.getX(),2) + pow(this->y - other.getY(),2));
     }
 
     void Point::print() {
-
+        cout << "(" << this->x << " , " << this->y << ")" << endl;
     }
 
-    Point Point::moveTowards(Point origin, Point destination, float distance) {
-        return origin;
+    Point Point::moveTowards(Point origin, Point destination, double distance) {
+        if(distance < 0){
+            throw std::invalid_argument("distance must be positive");
+        }
+        double original_distance = origin.distance(destination);
+        if (distance >= original_distance) {
+            return destination;
+        }
+        double ratio = distance / original_distance;
+        double newX = origin.getX() + (destination.getX() - origin.getX()) * ratio;
+        double newY = origin.getY() + (destination.getY() - origin.getY()) * ratio;
+        return Point(newX, newY);
     }
 
 

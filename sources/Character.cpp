@@ -10,7 +10,9 @@ namespace ariel {
 
     }
 
-    Character::~Character() {}
+    Character::~Character() {//not finished
+
+    }
 
     // Define copy constructor
     Character::Character(const Character &other) : Character(other.hit_num, other.location, other.name) {
@@ -19,6 +21,9 @@ namespace ariel {
 
     // Define copy assignment operator
     Character &Character::operator=(const Character &other){
+        this->location = Point(other.getLocation());
+        this->hit_num = other.getHitNum();
+        this->name = std::move(other.getName());
         return *this;
     }
 
@@ -27,22 +32,36 @@ namespace ariel {
 
     }
 
-    Character::Character(){}
-// Define move assignment operator
-    Character &Character::operator=(Character &&other) noexcept{
-        return *this;
+    Character::Character(){
+        this->location = Point(0,0);
+        this->hit_num = 0;
+        this->name = "";
+    }
 
+    // Define move assignment operator
+    Character &Character::operator=(Character &&other) noexcept{
+        this->location = Point(other.getLocation());
+        this->hit_num = other.getHitNum();
+        this->name = std::move(other.getName());
+        return *this;
     }
 
     bool Character::isAlive() {
-        return false;
+       return hit_num > 0;
     }
 
-    double Character::distance(Point other) {
-        return 0.0;
+    double Character::distance(Character *other) {
+        return this->getLocation().distance(other->getLocation());
     }
 
-    void Character::hit(int num) {}
+    void Character::hit(int num) {
+
+        if(this->hit_num < num){
+            this->hit_num = hit_num - num;
+        }
+        this->hit_num = 0;
+
+    }
 
     string Character::getName() const {
         return this->name;
@@ -56,8 +75,16 @@ namespace ariel {
         return this->hit_num;
     }
 
+    void Character::setName(string name){
+        this->name = name;
+    }
 
-//    string Character::print() {
-//        return this->name;
-//    }
-} // ariel
+    void Character::setLocation(Point location){
+        this->location = location;
+    }
+
+    void Character::setHitNum(int hit_num){
+        this->hit_num = hit_num;
+    }
+
+}

@@ -26,11 +26,16 @@ namespace ariel {
     public:
         Character(int hit_num_, Point location_, string name_);
         bool isAlive();
-        double distance(Point other);
+        double distance(Character *other);
         void hit(int num);
         string getName() const;
         Point getLocation() const;
         int getHitNum() const;
+
+        void setName(string name);
+        void setLocation(Point location);
+        void setHitNum(int hit_num);
+
         virtual string print() = 0;
 
         virtual ~Character();
