@@ -7,12 +7,14 @@
 namespace ariel {
 
     Team::Team(Character *leader_){
+        this->add(leader_);
         this->leader = leader_;
-
+//        this->group = NULL;
     }
 
     Team::Team(){
         this->leader = NULL;
+//        this->group = NULL;
 
     }
     Team::~Team(){
@@ -20,40 +22,101 @@ namespace ariel {
     }
 
     // Define copy constructor
-    Team::Team(const Team& other){
-
+    Team::Team(const Team& other) {
+        this->leader = other.getLeader();
+        this->group = other.getGroup();
     }
 
     // Define copy assignment operator
-    Team &Team::operator=(const Team& other){
+    Team &Team::operator=(const Team &other) {
+        this->group = other.getGroup();
+        this->leader = other.getLeader();
         return *this;
     }
 
     // Define move constructor
-    Team::Team(Team&& other) noexcept{
-
+    Team::Team(Team &&other) noexcept {
+        this-> leader = other.getLeader();
+        this-> group = other.getGroup();
     }
 
     // Define move assignment operator
-    Team &Team::operator=(Team&& other) noexcept{
+    Team &Team::operator=(Team &&other) noexcept{
+        this-> leader = other.getLeader();
+        this-> group = other.getGroup();
         return *this;
     }
 
 
-    void Team::add(Character * other){
+    void Team::add(Character *other) {
+        if(other->getInTeam()){
+            throw std::runtime_error("character already in team");
+        }
+        if (this->group.size() >= 10) {
+            throw std::runtime_error("In team there must be at most 10 teammates");
+        }
+        this->group.push_back(other);
+        other->setInTeam(true);
 
+        getOrganized();
     }
 
     Character* Team::getLeader() const{
         return this->leader;
     }
 
+    vector<Character *> Team::getGroupOrganized() const{
+        return this->group_organized;
+    }
+
     void Team::attack(Team *team){
 
+        if(!this->getLeader()->isAlive()){
+           this->leader = findClosestLivingCharacter(this->getGroupOrganized());
+        }
+        Character* enemy = findClosestLivingCharacter(team->getGroupOrganized());
+        for (Character* member : this->getGroupOrganized()) {
+            if(member->isAlive()) {
+                if (std::string(typeid(member).name()).compare("Cowboy") == 0) {
+                    Cowboy* temp = dynamic_cast<Cowboy*>(member);
+                    temp->shoot(enemy);
+                }
+                else{
+                    Ninja* temp = dynamic_cast<Ninja*>(member);
+                    temp->slash(enemy);
+                }
+                if(!enemy->isAlive()){
+                    enemy = findClosestLivingCharacter(team->getGroupOrganized());
+                }
+            }
+        }
+    }
+
+    Character* Team::findClosestLivingCharacter(vector<Character *> group) const {
+        double minDistance = std::numeric_limits<double>::max();
+        Character* closestCharacter = nullptr;
+
+        for (Character* member : group) {
+            if (member->isAlive()) {
+                double distance = member->distance(this->getLeader());
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestCharacter = member;
+                }
+            }
+        }
+
+        return closestCharacter;
     }
 
     int Team::stillAlive() const {
-        return 0;
+        int count = 0;
+        for (std::vector<Character *>::size_type i = 0; i < this->group.size(); i++) {
+            if (this->group[i]->isAlive()) {
+                count++;
+            }
+        }
+        return count;
     }
 
 
@@ -61,8 +124,26 @@ namespace ariel {
         return group;
     }
 
+    void Team::getOrganized() {
+        vector<Character *> group_cowboy;
+        vector<Character *> group_ninja;
+        for (Character* member : this->getGroup()) {
+            if (std::string(typeid(member).name()).compare("Cowboy") == 0) {
+                group_cowboy.push_back(member);
+            }
+            else{
+                group_ninja.push_back(member);
+            }
+        }
 
-void Team::print() const{
-//        cout<<this->leader->getName()<<endl;
+        group_cowboy.insert(group_cowboy.end(), group_ninja.begin(), group_ninja.end());
+        this->group_organized = group_cowboy;
+    }
+
+
+    void Team::print() const{
+         for (Character* member : this->group_organized) {
+            cout << member->print() << endl;
+        }
     }
 }

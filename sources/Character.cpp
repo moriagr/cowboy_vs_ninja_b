@@ -7,7 +7,15 @@
 namespace ariel {
     Character::Character(int hit_num_, Point location_, string name_) : location(location_), hit_num(hit_num_),
                                                                         name(name_) {
+        this->in_team = false;
+    }
 
+    bool Character::getInTeam() const{
+        return this->in_team;
+    }
+
+    void Character::setInTeam(bool inTeam){
+        this->in_team = inTeam;
     }
 
     Character::~Character() {//not finished
@@ -16,6 +24,7 @@ namespace ariel {
 
     // Define copy constructor
     Character::Character(const Character &other) : Character(other.hit_num, other.location, other.name) {
+        this->in_team = other.in_team;
 
     }
 
@@ -24,18 +33,20 @@ namespace ariel {
         this->location = Point(other.getLocation());
         this->hit_num = other.getHitNum();
         this->name = std::move(other.getName());
+        this->in_team = other.getInTeam();
         return *this;
     }
 
     // Define move constructor
-    Character::Character(Character&& other) noexcept : location(other.location), hit_num(other.hit_num), name(std::move(other.name)) {
-
+    Character::Character(Character&& other) noexcept : location(other.getLocation()), hit_num(other.getHitNum()), name(std::move(other.getName())) {
+        this->in_team = other.getInTeam();
     }
 
     Character::Character(){
         this->location = Point(0,0);
         this->hit_num = 0;
         this->name = "";
+        this->in_team = false;
     }
 
     // Define move assignment operator
@@ -43,11 +54,13 @@ namespace ariel {
         this->location = Point(other.getLocation());
         this->hit_num = other.getHitNum();
         this->name = std::move(other.getName());
+        this->in_team = other.getInTeam();
+
         return *this;
     }
 
     bool Character::isAlive() {
-        if( hit_num > 0 ){
+        if( this->getHitNum() > 0 ){
             return true;
         }
        return false;
@@ -62,10 +75,10 @@ namespace ariel {
             throw std::invalid_argument("Hit number can't be negative");
         }
 
-        if(this->hit_num < num){
-            this->hit_num = hit_num - num;
-        }
-        this->hit_num = 0;
+//        if(this->hit_num < num){
+        this->hit_num = this->hit_num - num;
+//        }
+//        this->hit_num = 0;
 
     }
 

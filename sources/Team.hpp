@@ -17,6 +17,7 @@ using namespace std;
 #include "./YoungNinja.hpp"
 #include "./TrainedNinja.hpp"
 #include "./Cowboy.hpp"
+#include <typeinfo>
 
 #include <vector>
 
@@ -26,6 +27,11 @@ namespace ariel {
     private:
         Character *leader;
         vector<Character *> group;
+        vector<Character *> group_organized;
+        void getOrganized();
+        vector<Character *> getGroupOrganized() const;
+        Character* findClosestLivingCharacter(vector<Character *> group) const;
+
     public:
         Team(Character *leader_);
 

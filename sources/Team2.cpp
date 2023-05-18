@@ -41,7 +41,8 @@ namespace ariel {
     }
 
     void Team2::print() const{
-//        cout << this->leader->getName() << endl;
-
+        for (Character* member : this->getGroup()) {
+            cout << member->print() << endl;
+        }
     }
 } // ariel

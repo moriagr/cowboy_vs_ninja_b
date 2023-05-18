@@ -23,6 +23,7 @@ namespace ariel {
         string name;
         Point location;
         int hit_num;
+        bool in_team;
     public:
         Character(int hit_num_, Point location_, string name_);
         bool isAlive();
@@ -31,7 +32,8 @@ namespace ariel {
         string getName() const;
         Point getLocation() const;
         int getHitNum() const;
-
+        bool getInTeam() const;
+        void setInTeam(bool inTeam);
         void setName(string name);
         void setLocation(Point location);
         void setHitNum(int hit_num);

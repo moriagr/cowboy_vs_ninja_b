@@ -142,6 +142,8 @@ TEST_SUITE("Classes initialization tests and Team modification( add(),stillAlive
     TEST_CASE("Team initialization") {
         auto cowboy = create_cowboy(2, 3);
         auto ninja = create_yninja(2, 3);
+        cout <<cowboy->print()<<endl;
+        cout <<ninja->print()<<endl;
         Team team{cowboy};
         CHECK_EQ(team.stillAlive(), 1);
 
@@ -220,15 +222,17 @@ TEST_SUITE("Battle related methods") {
                 cowboy->shoot(target);
             }
         };
-
         shoot(6);
         CHECK_FALSE(cowboy->hasboolets());
         CHECK_NOTHROW(cowboy->shoot(target)); // This should not damage the target
+
         cowboy->reload();
 
         shoot(2);
+
         cowboy->reload();
         shoot(6);
+
         CHECK(target->isAlive()); // Target should still be alive with 10 hit points if the cowboys damage is 10
         shoot(1);
         CHECK(target->isAlive()); // Reloading when the magazine isn't empty shouldn't result in more than 6 bullets, the previous shoot should have no effect
