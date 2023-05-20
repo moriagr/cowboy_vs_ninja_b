@@ -19,7 +19,7 @@ namespace ariel {
     }
 
     Character::~Character() {//not finished
-
+//        delete
     }
 
     // Define copy constructor

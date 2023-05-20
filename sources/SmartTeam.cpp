@@ -12,9 +12,9 @@ namespace ariel {
 
     }
 
-    SmartTeam::~SmartTeam() {
-
-    }
+//    SmartTeam::~SmartTeam() {
+//
+//    }
 
     // Define copy constructor
     SmartTeam::SmartTeam(const SmartTeam &other) {}

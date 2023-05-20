@@ -251,9 +251,7 @@ TEST_SUITE("Battle related methods") {
         auto cowboy = create_cowboy();
         for (int i = 0; i < 15; i++) {
             cowboy->reload();
-            cout<<"i:  "<<i<<endl;
             // After 10 shots, young should die
-            cout << (young->print())<<endl;
             if (i < 10) {
                 CHECK(young->isAlive());
                 cowboy->shoot(young);
@@ -471,7 +469,7 @@ TEST_SUITE("Battle simulations") {
 	team2.add(cowboy3);
 
         CHECK_EQ(team2.stillAlive(), 7);
-
+//        team.attack(&team2);
         multi_attack(2, team, team2);
         CHECK_FALSE(young_ninja->isAlive()); // Young ninja should be dead
         CHECK((trained_ninja->isAlive() && old_ninja->isAlive() &&

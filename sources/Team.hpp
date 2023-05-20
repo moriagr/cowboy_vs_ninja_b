@@ -28,16 +28,20 @@ namespace ariel {
         Character *leader;
         vector<Character *> group;
         vector<Character *> group_organized;
+
         void getOrganized();
+
         vector<Character *> getGroupOrganized() const;
-        Character* findClosestLivingCharacter(vector<Character *> group) const;
+
+    protected:
+        Character *findClosestLivingCharacter(vector<Character *> group) const;
 
     public:
         Team(Character *leader_);
 
         Team();
 
-        virtual ~Team();
+        ~Team();
 
         // Define copy constructor
         Team(const Team &other);
@@ -46,16 +50,24 @@ namespace ariel {
         Team &operator=(const Team &other);
 
         // Define move constructor
-        Team(Team &&other) noexcept;
+        Team(Team &&other)
+
+        noexcept;
 
         // Define move assignment operator
-        Team &operator=(Team &&other) noexcept;
+        Team &operator=(Team &&other)
+
+        noexcept;
+
+        void setLeader(Character *leader_);
 
         void add(Character *other);
 
         void attack(Team *team);
 
         int stillAlive() const;
+
+        void setGroup(vector<Character *> group_);
 
         void print() const;
 
@@ -70,7 +82,7 @@ namespace ariel {
 
         SmartTeam();
 
-        ~SmartTeam() override;
+//        ~SmartTeam() override;
 
         // Define copy constructor
         SmartTeam(const SmartTeam &other);
@@ -79,7 +91,7 @@ namespace ariel {
         SmartTeam &operator=(const SmartTeam &other);
 
         // Define move constructor
-        SmartTeam(SmartTeam &&other)  noexcept;
+        SmartTeam(SmartTeam &&other) noexcept;
 
         // Define move assignment operator
         SmartTeam &operator=(SmartTeam &&other) noexcept;
@@ -92,20 +104,21 @@ namespace ariel {
     class Team2 : public Team {
     public:
         Team2(Character *leader_);
+
         Team2();
-        ~Team2() override;
+//        ~Team2() override;
 
         // Define copy constructor
-        Team2(const Team2& other);
+        Team2(const Team2 &other);
 
         // Define copy assignment operator
-        Team2& operator=(const Team2& other);
+        Team2 &operator=(const Team2 &other);
 
         // Define move constructor
-        Team2(Team2&& other) noexcept;
+        Team2(Team2 &&other) noexcept;
 
         // Define move assignment operator
-        Team2& operator=(Team2&& other) noexcept;
+        Team2 &operator=(Team2 &&other) noexcept;
 
         void attack(Team *team);
 

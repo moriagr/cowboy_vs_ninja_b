@@ -42,7 +42,7 @@ namespace ariel {
     }
 
     void Ninja::move(Character *other) {
-        this->getLocation().moveTowards(this->getLocation(), other->getLocation(), this->getSpeed());
+        this->setLocation(this->getLocation().moveTowards(this->getLocation(), other->getLocation(), this->getSpeed()));
     }
 
     void Ninja::slash(Character *other) {
@@ -50,10 +50,10 @@ namespace ariel {
             throw std::runtime_error("You can't slash yourself");
         }
 
-//        if(!other->isAlive() || !this->isAlive()){
-//            throw std::runtime_error("You can't slash yourself")
-//        }
-//
+        if(!other->isAlive() || !this->isAlive()){
+            throw std::runtime_error("You can't slash someone who's already dead");
+        }
+
         if(this->isAlive() && this->distance(other) <= 1){
             other->hit(40);
         }

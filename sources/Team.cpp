@@ -18,7 +18,9 @@ namespace ariel {
 
     }
     Team::~Team(){
-
+        for (Character* member : this->group) {
+            delete member;
+        }
     }
 
     // Define copy constructor
@@ -65,26 +67,53 @@ namespace ariel {
         return this->leader;
     }
 
+    void Team::setLeader(Character* leader_){
+        this->leader = leader_;
+    }
+
+    void Team::setGroup(vector<Character *> group_){
+        this->group = group_;
+    }
+
     vector<Character *> Team::getGroupOrganized() const{
         return this->group_organized;
     }
 
     void Team::attack(Team *team){
-
+        if(team == nullptr){
+            throw std::invalid_argument("you can't compare between a null team");
+        }
         if(!this->getLeader()->isAlive()){
            this->leader = findClosestLivingCharacter(this->getGroupOrganized());
         }
+
         Character* enemy = findClosestLivingCharacter(team->getGroupOrganized());
         for (Character* member : this->getGroupOrganized()) {
+
             if(member->isAlive()) {
-                if (std::string(typeid(member).name()).compare("Cowboy") == 0) {
-                    Cowboy* temp = dynamic_cast<Cowboy*>(member);
-                    temp->shoot(enemy);
+                Cowboy* cowboy = dynamic_cast<Cowboy*>(member);
+                Ninja* ninja = dynamic_cast<Ninja*>(member);
+                if(cowboy){
+                    if(cowboy->hasboolets()){
+                        cowboy->shoot(enemy);
+                    }
+                    else{
+                        cowboy->reload();
+                    }
                 }
-                else{
-                    Ninja* temp = dynamic_cast<Ninja*>(member);
-                    temp->slash(enemy);
+                else if(ninja){
+                    ninja->slash(enemy);
+
                 }
+//                if (std::string(typeid(member).name()).compare("Cowboy") == 6) {
+//                    cout <<"hey"<<endl;
+//                    Cowboy* temp = dynamic_cast<Cowboy*>(member);
+//                    cout << temp->print() <<endl;
+//                }
+//                else{
+//                    Ninja* temp = dynamic_cast<Ninja*>(member);
+//                    temp->slash(enemy);
+//                }
                 if(!enemy->isAlive()){
                     enemy = findClosestLivingCharacter(team->getGroupOrganized());
                 }
