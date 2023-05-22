@@ -29,10 +29,6 @@ namespace ariel {
         vector<Character *> group;
         vector<Character *> group_organized;
 
-        void getOrganized();
-
-        vector<Character *> getGroupOrganized() const;
-
     protected:
         Character *findClosestLivingCharacter(vector<Character *> group) const;
 
@@ -40,6 +36,8 @@ namespace ariel {
         Team(Character *leader_);
 
         Team();
+
+        vector<Character *> getGroupOrganized() const;
 
         ~Team();
 
@@ -50,14 +48,12 @@ namespace ariel {
         Team &operator=(const Team &other);
 
         // Define move constructor
-        Team(Team &&other)
-
-        noexcept;
+        Team(Team &&other) noexcept;
 
         // Define move assignment operator
-        Team &operator=(Team &&other)
+        Team &operator=(Team &&other) noexcept;
 
-        noexcept;
+        void getOrganized();
 
         void setLeader(Character *leader_);
 
@@ -68,6 +64,8 @@ namespace ariel {
         int stillAlive() const;
 
         void setGroup(vector<Character *> group_);
+
+        void setGroupOrganized(vector<Character *> groupOrganized);
 
         void print() const;
 
@@ -81,6 +79,8 @@ namespace ariel {
         SmartTeam(Character *leader_);
 
         SmartTeam();
+
+        void getNewOrganized();
 
         void attack(Team *team);
 

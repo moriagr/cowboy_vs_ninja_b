@@ -8,6 +8,8 @@ namespace ariel {
 
     Team::Team(Character *leader_){
         this->add(leader_);
+//        this->getOrganized();
+
         this->leader = leader_;
 //        this->group = NULL;
     }
@@ -60,7 +62,7 @@ namespace ariel {
         this->group.push_back(other);
         other->setInTeam(true);
 
-        getOrganized();
+        this->getOrganized();
     }
 
     Character* Team::getLeader() const{
@@ -166,7 +168,8 @@ namespace ariel {
         vector<Character *> group_cowboy;
         vector<Character *> group_ninja;
         for (Character* member : this->getGroup()) {
-            if (std::string(typeid(member).name()).compare("Cowboy") == 0) {
+            Cowboy* cowboy = dynamic_cast<Cowboy*>(member);
+            if (cowboy) {
                 group_cowboy.push_back(member);
             }
             else{
@@ -178,6 +181,9 @@ namespace ariel {
         this->group_organized = group_cowboy;
     }
 
+    void Team::setGroupOrganized(vector<Character *> groupOrganized){
+        this->group_organized = groupOrganized;
+    }
 
     void Team::print() const{
          for (Character* member : this->group_organized) {
