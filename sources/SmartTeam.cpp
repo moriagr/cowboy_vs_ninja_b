@@ -9,41 +9,60 @@ namespace ariel {
     }
 
     SmartTeam::SmartTeam() : Team() {
-        this->leader = nullptr;
     }
 
-    SmartTeam::~SmartTeam() {
-        for (Character* member : this->group) {
-            delete member;
+
+    void SmartTeam::attack(Team *team) {
+        if(team == nullptr){
+            throw std::invalid_argument("you can't compare between a null team");
+        }
+        if(team->stillAlive() <= 0){
+            throw std::runtime_error("You can't attack a dead team");
+        }
+
+        if(this->stillAlive() <= 0){
+            throw std::runtime_error("The can't attack a team when all the original team is dead");
+        }
+        if(!this->getLeader()->isAlive()){
+            this->setLeader(this->findClosestLivingCharacter(this->getGroup()));
+        }
+
+        Character* enemy = this->findClosestLivingCharacter(team->getGroup());
+
+        for (Character* member : this->getGroup()) {
+            if(member->isAlive()) {
+                Cowboy* cowboy = dynamic_cast<Cowboy*>(member);
+                Ninja* ninja = dynamic_cast<Ninja*>(member);
+                if(cowboy){
+                    if(cowboy->hasboolets()){
+                        cowboy->shoot(enemy);
+                    }
+                    else{
+                        cowboy->reload();
+                    }
+                }
+                else if(ninja){
+                    if(ninja->distance(enemy) < 1) {
+                        ninja->slash(enemy);
+                    }
+                    else{
+                        ninja->move(enemy);
+                    }
+                }
+                if(!enemy->isAlive()){
+                    enemy = this->findClosestLivingCharacter(team->getGroup());
+                    if(enemy == nullptr){
+                        return;
+                    }
+                }
+            }
         }
     }
 
-    SmartTeam::SmartTeam(const SmartTeam& other):Team(other){
+    void SmartTeam::print() const {
+        for (Character* member : this->getGroup()) {
+            cout << member->print() << endl;
+        }
     }
-
-    // Define copy assignment operator
-    SmartTeam &SmartTeam::operator=(const SmartTeam& other){
-        this->setLeader(other.getLeader());
-        this->setGroup(other.getGroup());
-        return *this;
-    }
-
-    // Define move constructor
-    SmartTeam::SmartTeam(SmartTeam&& other) noexcept: SmartTeam(other.getLeader()){
-
-}
-
-    // Define move assignment operator
-    SmartTeam &SmartTeam::operator=(SmartTeam&& other) noexcept{
-        this->setLeader(other.getLeader());
-        this->setGroup(other.getGroup());
-        return *this;
-    }
-
-    void SmartTeam::attack(Team *team) {
-
-    }
-
-    void SmartTeam::print() const {}
 
 } // ariel

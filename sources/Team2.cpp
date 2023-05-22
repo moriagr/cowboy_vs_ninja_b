@@ -9,36 +9,6 @@ namespace ariel {
     }
 
     Team2::Team2():Team(){
-        this->leader = nullptr;
-    }
-
-    Team2::~Team2(){
-        for (Character* member : this->group) {
-            delete member;
-        }
-    }
-
-    // Define copy constructor
-    Team2::Team2(const Team2& other):Team(other){
-    }
-
-    // Define copy assignment operator
-    Team2 &Team2::operator=(const Team2& other){
-        this->setLeader(other.getLeader());
-        this->setGroup(other.getGroup());
-        return *this;
-    }
-
-    // Define move constructor
-    Team2::Team2(Team2&& other) noexcept: Team2(other.getLeader()){
-
-    }
-
-    // Define move assignment operator
-    Team2 &Team2::operator=(Team2&& other) noexcept{
-        this->setLeader(other.getLeader());
-        this->setGroup(other.getGroup());
-        return *this;
     }
 
     void Team2::attack(Team *team) {
