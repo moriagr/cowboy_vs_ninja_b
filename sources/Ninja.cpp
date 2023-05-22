@@ -54,7 +54,7 @@ namespace ariel {
             throw std::runtime_error("You can't slash someone who's already dead");
         }
 
-        if(this->isAlive() && this->distance(other) <= 1){
+        if(this->distance(other) <= 1){
             other->hit(40);
         }
     }

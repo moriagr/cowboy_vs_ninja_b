@@ -13,7 +13,7 @@ namespace ariel {
     }
 
     Team::Team(){
-        this->leader = NULL;
+        this->leader = nullptr;
 //        this->group = NULL;
 
     }
@@ -81,15 +81,24 @@ namespace ariel {
 
     void Team::attack(Team *team){
         if(team == nullptr){
-            throw std::invalid_argument("you can't compare between a null team");
+            throw std::invalid_argument("You can't compare between a null team");
         }
+
+        if(team->stillAlive() <= 0){
+            throw std::runtime_error("You can't attack a dead team");
+        }
+
+        if(this->stillAlive() <= 0){
+            throw std::runtime_error("The can't attack a team when all the original team is dead");
+        }
+
         if(!this->getLeader()->isAlive()){
            this->leader = findClosestLivingCharacter(this->getGroupOrganized());
         }
 
         Character* enemy = findClosestLivingCharacter(team->getGroupOrganized());
-        for (Character* member : this->getGroupOrganized()) {
 
+        for (Character* member : this->getGroupOrganized()) {
             if(member->isAlive()) {
                 Cowboy* cowboy = dynamic_cast<Cowboy*>(member);
                 Ninja* ninja = dynamic_cast<Ninja*>(member);
@@ -102,23 +111,23 @@ namespace ariel {
                     }
                 }
                 else if(ninja){
-                    ninja->slash(enemy);
-
+                    if(ninja->distance(enemy) < 1){
+                        ninja->slash(enemy);
+                    }
+                    else{
+                        ninja->move(enemy);
+                    }
                 }
-//                if (std::string(typeid(member).name()).compare("Cowboy") == 6) {
-//                    cout <<"hey"<<endl;
-//                    Cowboy* temp = dynamic_cast<Cowboy*>(member);
-//                    cout << temp->print() <<endl;
-//                }
-//                else{
-//                    Ninja* temp = dynamic_cast<Ninja*>(member);
-//                    temp->slash(enemy);
-//                }
+
                 if(!enemy->isAlive()){
                     enemy = findClosestLivingCharacter(team->getGroupOrganized());
+                    if(enemy == nullptr){
+                        return;
+                    }
                 }
             }
         }
+
     }
 
     Character* Team::findClosestLivingCharacter(vector<Character *> group) const {
@@ -140,8 +149,8 @@ namespace ariel {
 
     int Team::stillAlive() const {
         int count = 0;
-        for (std::vector<Character *>::size_type i = 0; i < this->group.size(); i++) {
-            if (this->group[i]->isAlive()) {
+        for (Character* member : this->group) {
+            if (member->isAlive()) {
                 count++;
             }
         }

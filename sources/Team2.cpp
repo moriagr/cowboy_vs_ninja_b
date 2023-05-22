@@ -9,14 +9,14 @@ namespace ariel {
     }
 
     Team2::Team2():Team(){
-
+        this->leader = nullptr;
     }
 
-//    Team2::~Team2(){
-//        for (Character* member : this->group) {
-//            delete member;
-//        }
-//    }
+    Team2::~Team2(){
+        for (Character* member : this->group) {
+            delete member;
+        }
+    }
 
     // Define copy constructor
     Team2::Team2(const Team2& other):Team(other){
@@ -45,22 +45,44 @@ namespace ariel {
         if(team == nullptr){
             throw std::invalid_argument("you can't compare between a null team");
         }
+        if(team->stillAlive() <= 0){
+            throw std::runtime_error("You can't attack a dead team");
+        }
+
+        if(this->stillAlive() <= 0){
+            throw std::runtime_error("The can't attack a team when all the original team is dead");
+        }
         if(!this->getLeader()->isAlive()){
             this->setLeader(this->findClosestLivingCharacter(this->getGroup()));
         }
+
         Character* enemy = this->findClosestLivingCharacter(team->getGroup());
+
         for (Character* member : this->getGroup()) {
             if(member->isAlive()) {
-                if (std::string(typeid(member).name()).compare("Cowboy") == 6) {
-                    Cowboy* temp = dynamic_cast<Cowboy*>(member);
-                    temp->shoot(enemy);
+                Cowboy* cowboy = dynamic_cast<Cowboy*>(member);
+                Ninja* ninja = dynamic_cast<Ninja*>(member);
+                if(cowboy){
+                    if(cowboy->hasboolets()){
+                        cowboy->shoot(enemy);
+                    }
+                    else{
+                        cowboy->reload();
+                    }
                 }
-                else{
-                    Ninja* temp = dynamic_cast<Ninja*>(member);
-                    temp->slash(enemy);
+                else if(ninja){
+                    if(ninja->distance(enemy) < 1) {
+                        ninja->slash(enemy);
+                    }
+                    else{
+                        ninja->move(enemy);
+                    }
                 }
                 if(!enemy->isAlive()){
                     enemy = this->findClosestLivingCharacter(team->getGroup());
+                    if(enemy == nullptr){
+                        return;
+                    }
                 }
             }
         }

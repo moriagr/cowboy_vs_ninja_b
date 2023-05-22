@@ -45,12 +45,18 @@ namespace ariel {
             throw std::invalid_argument("distance must be positive");
         }
         double original_distance = origin.distance(destination);
+//        origin.print();
+//        destination.print();
         if (distance >= original_distance) {
             return destination;
         }
         double ratio = distance / original_distance;
         double newX = origin.getX() + (destination.getX() - origin.getX()) * ratio;
+//        cout <<"newX:  "<<newX<<endl;
+
         double newY = origin.getY() + (destination.getY() - origin.getY()) * ratio;
+//        cout <<"newY:  "<<newY<<endl;
+
         return Point(newX, newY);
     }
 

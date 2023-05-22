@@ -82,7 +82,7 @@ namespace ariel {
 
         SmartTeam();
 
-//        ~SmartTeam() override;
+        ~SmartTeam();
 
         // Define copy constructor
         SmartTeam(const SmartTeam &other);
@@ -106,7 +106,7 @@ namespace ariel {
         Team2(Character *leader_);
 
         Team2();
-//        ~Team2() override;
+        ~Team2();
 
         // Define copy constructor
         Team2(const Team2 &other);

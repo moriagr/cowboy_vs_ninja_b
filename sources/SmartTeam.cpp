@@ -9,30 +9,40 @@ namespace ariel {
     }
 
     SmartTeam::SmartTeam() : Team() {
-
+        this->leader = nullptr;
     }
 
-//    SmartTeam::~SmartTeam() {
-//
-//    }
+    SmartTeam::~SmartTeam() {
+        for (Character* member : this->group) {
+            delete member;
+        }
+    }
 
-    // Define copy constructor
-    SmartTeam::SmartTeam(const SmartTeam &other) {}
+    SmartTeam::SmartTeam(const SmartTeam& other):Team(other){
+    }
 
     // Define copy assignment operator
-    SmartTeam &SmartTeam::operator=(const SmartTeam &other) {
+    SmartTeam &SmartTeam::operator=(const SmartTeam& other){
+        this->setLeader(other.getLeader());
+        this->setGroup(other.getGroup());
         return *this;
     }
 
     // Define move constructor
-    SmartTeam::SmartTeam(SmartTeam &&other)noexcept {}
+    SmartTeam::SmartTeam(SmartTeam&& other) noexcept: SmartTeam(other.getLeader()){
+
+}
 
     // Define move assignment operator
-    SmartTeam &SmartTeam::operator=(SmartTeam &&other) noexcept{
+    SmartTeam &SmartTeam::operator=(SmartTeam&& other) noexcept{
+        this->setLeader(other.getLeader());
+        this->setGroup(other.getGroup());
         return *this;
     }
 
-    void SmartTeam::attack(Team *team) {}
+    void SmartTeam::attack(Team *team) {
+
+    }
 
     void SmartTeam::print() const {}
 

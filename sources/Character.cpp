@@ -71,14 +71,17 @@ namespace ariel {
     }
 
     void Character::hit(int num) {
+//        cout<<this->hit_num<<"-----"<<num<<endl;
         if(num < 0){
             throw std::invalid_argument("Hit number can't be negative");
         }
 
 //        if(this->hit_num < num){
         this->hit_num = this->hit_num - num;
+        if(this->hit_num < 0){
+            this->hit_num = 0;
+        }
 //        }
-//        this->hit_num = 0;
 
     }
 
